@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <property name="author" value="datNV"/>
+    <property name="changeId" value="1689577810383"/>
+
+    <changeSet id="${changeId}-1" author="${author}">
+        <createTable tableName="seo_campaign">
+            <column name="seo_campaign_id" type="varchar(50)">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="seo_campaign_pm_key_id"/>
+            </column>
+            <column name="name" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="duration_view" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number_hour" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country_target" type="varchar(500)"/>
+            <column name="status" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expect_total_view" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="owner" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime" defaultValue="now()"/>
+            <column name="created_by" type="varchar(50)"/>
+            <column name="modified_date" type="datetime" defaultValue="now()"/>
+            <column name="modified_by" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="${changeId}-2`" author="${author}">
+        <createSequence sequenceName="seo_campaign_id_sequence" startValue="1"
+                        maxValue="9999999999"/>
+    </changeSet>
+    <changeSet id="${changeId}-3" author="${author}">
+        <createTable tableName="seo_campaign_url">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true"
+                             primaryKeyName="seo_campaign_url_pm_key_id"/>
+            </column>
+            <column name="url" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="seo_campaign_id" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime" defaultValue="now()"/>
+            <column name="created_by" type="varchar(50)"/>
+            <column name="modified_date" type="datetime" defaultValue="now()"/>
+            <column name="modified_by" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="${changeId}-4" author="${author}">
+        <createTable tableName="seo_keyword">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"
+                             primaryKeyName="seo_keyword_pm_key_id"/>
+            </column>
+            <column name="keyword" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="seo_campaign_id" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime" defaultValue="now()"/>
+            <column name="created_by" type="varchar(50)"/>
+            <column name="modified_date" type="datetime" defaultValue="now()"/>
+            <column name="modified_by" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="${changeId}-5" author="${author}">
+        <addForeignKeyConstraint baseTableName="seo_keyword"
+                                 baseColumnNames="seo_campaign_id"
+                                 constraintName="fk_seo_keyword_seo_campaign"
+                                 referencedTableName="seo_campaign"
+                                 referencedColumnNames="seo_campaign_id"/>
+    </changeSet>
+    <changeSet id="${changeId}-6" author="${author}">
+        <addForeignKeyConstraint baseTableName="seo_campaign_url"
+                                 baseColumnNames="seo_campaign_id"
+                                 constraintName="fk_seo_campaign_url_seo_campaign"
+                                 referencedTableName="seo_campaign"
+                                 referencedColumnNames="seo_campaign_id"/>
+    </changeSet>
+    <changeSet id="${changeId}-7" author="${author}">
+        <createTable tableName="seo_user_agent">
+            <column name="id" type="int8" autoIncrement="true">
+                <constraints primaryKey="true"
+                             primaryKeyName="seo_user_agent_pm_key_id"/>
+            </column>
+            <column name="value" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="seo_campaign_id" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime" defaultValue="now()"/>
+            <column name="created_by" type="varchar(50)"/>
+            <column name="modified_date" type="datetime" defaultValue="now()"/>
+            <column name="modified_by" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="${changeId}-8" author="${author}">
+        <addForeignKeyConstraint baseTableName="seo_user_agent"
+                                 baseColumnNames="seo_campaign_id"
+                                 constraintName="fk_seo_user_agent_seo_campaign"
+                                 referencedTableName="seo_campaign"
+                                 referencedColumnNames="seo_campaign_id"/>
+    </changeSet>
+</databaseChangeLog>

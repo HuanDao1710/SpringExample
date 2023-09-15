@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+auth:
+  access-token:
+    secret: ${SECRET_TOKEN}
+
+kafka:
+  start-campaign:
+    topic: start-campaign-prod
+  stop-campaign:
+    topic: stop-campaign-prod
+  start-seo-campaign:
+    topic: start-seo-campaign-prod
+  stop-seo-campaign:
+    topic: stop-seo-campaign-prod
+  resume-task:
+    topic: resume-task-prod
+    group: resume-task-group
+  callback-task:
+    topic: callback-task-prod
+    group: callback-task-group
+
+internal:
+  count-view-uri: http://boomer-logging:8080/api/logging/campaign/count-view
+  login-uri: http://boomer-auth:8080/api/auth/login
+  username: ${ADMIN_USER}
+  password: ${ADMIN_PASSWORD}

@@ -1,0 +1,49 @@
+image: atlassian/default-image:3
+
+pipelines:
+  branches:
+    master:
+#      - step:
+#          name: Build
+#          caches:
+#            - gradle
+#          script:
+#            - gradle build
+#            - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+#            - docker build -t datnvfalcon/view-boomer:core-latest .
+#            - docker push datnvfalcon/view-boomer:core-latest
+#            - docker logout
+#          services:
+#            - docker
+#      - step:
+#          name: SCP Docker-compose.yml
+#          deployment: production
+#          script:
+#            - pipe: atlassian/scp-deploy:0.3.3
+#              variables:
+#                USER: $USER
+#                SERVER: $SERVER
+#                SSH_KEY: $SSH_KEY
+#                REMOTE_PATH: '/var/www/view-boomer/core'
+#                LOCAL_PATH: 'docker-compose.yml'
+      - step:
+          name: Deploy to production
+          deployment: production
+          script:
+            - echo "Deploying to production environment"
+            - envsubst < ./deploy.sh > deploy-out.sh
+            - pipe: atlassian/ssh-run:0.2.2
+              variables:
+                SSH_USER: '$SSH_USER'
+                SERVER: '$SERVER'
+                SSH_KEY: '$SSH_KEY'
+                KAFKA_HOST: '$KAFKA_HOST'
+                SECRET_TOKEN: '$SECRET_TOKEN'
+                ADMIN_USER: '$ADMIN_USER'
+                ADMIN_PASSWORD: '$ADMIN_PASSWORD'
+                DB_URL: '$DB_URL'
+                DB_USERNAME: '$DB_USERNAME'
+                DB_PASSWORD: '$DB_PASSWORD'
+                WORK_DIR: '$WORK_DIR'
+                MODE: 'script'
+                COMMAND: "./deploy-out.sh"

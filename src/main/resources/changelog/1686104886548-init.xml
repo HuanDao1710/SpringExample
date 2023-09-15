@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <property name="author" value="datNV"/>
+    <property name="changeId" value="1686104886548"/>
+    <changeSet id="${changeId}_1" author="${author}">
+        <createTable tableName="campaign">
+            <column name="campaign_id" type="varchar(100)">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="campaign_id_pm_key"/>
+            </column>
+            <column name="name" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expect_total_view" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="duration_view" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country_target" type="varchar(512)"/>
+            <column name="number_hour" type="int4"/>
+            <column name="owner" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_date" type="datetime" defaultValue="now()"/>
+            <column name="modified_by" type="varchar(255)"/>
+            <column name="modified_date" type="datetime" defaultValue="now()"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="${changeId}_2" author="${author}">
+        <createTable tableName="campaign_url">
+            <column name="campaign_url_id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="campaign_url_id_pm_key"/>
+            </column>
+            <column name="campaign_id" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_date" type="datetime" defaultValue="now()"/>
+            <column name="modified_by" type="varchar(255)"/>
+            <column name="modified_date" type="datetime" defaultValue="now()"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="${changeId}_3" author="${author}">
+        <createTable tableName="campaign_url_detail">
+            <column name="campaign_url_detail_id" type="bigint"
+                    autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="campaign_url_detail_id_pm_key"/>
+            </column>
+            <column name="value" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="campaign_url_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_date" type="datetime" defaultValue="now()"/>
+            <column name="modified_by" type="varchar(255)"/>
+            <column name="modified_date" type="datetime" defaultValue="now()"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="${changeId}_4" author="${author}">
+        <createSequence sequenceName="campaign_id_sequence" minValue="1"
+                        maxValue="9999999999"/>
+    </changeSet>
+    <changeSet id="${changeId}_5" author="${author}">
+        <addForeignKeyConstraint baseTableName="campaign_url_detail"
+                                 baseColumnNames="campaign_url_id"
+                                 constraintName="fk_campaign_url_detail_on_campaign_url"
+                                 referencedTableName="campaign_url"
+                                 referencedColumnNames="campaign_url_id"/>
+    </changeSet>
+    <changeSet id="${changeId}_6" author="${author}">
+        <addForeignKeyConstraint baseTableName="campaign_url"
+                                 baseColumnNames="campaign_id"
+                                 constraintName="fk_campaign_url_on_campaign"
+                                 referencedTableName="campaign"
+                                 referencedColumnNames="campaign_id"/>
+    </changeSet>
+    <changeSet id="${changeId}_7" author="${author}">
+        <createTable tableName="country">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="country_id_pk"/>
+            </column>
+            <column name="short_name" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_date" type="datetime" defaultValue="now()"/>
+            <column name="modified_by" type="varchar(255)"/>
+            <column name="modified_date" type="datetime" defaultValue="now()"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="${changeId}_8" author="${author}">
+        <sqlFile path="sql/insertCountry.sql" splitStatements="true"/>
+    </changeSet>
+    <changeSet id="${changeId}_9" author="${author}">
+        <createTable tableName="notification">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="notification_pm_key"/>
+            </column>
+            <column name="owner" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="seen" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="object_link" type="varchar(255)" />
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_date" type="datetime" defaultValue="now()"/>
+            <column name="modified_by" type="varchar(255)"/>
+            <column name="modified_date" type="datetime" defaultValue="now()"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

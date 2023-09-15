@@ -1,0 +1,51 @@
+server:
+  port: 8070
+  servlet:
+    context-path: /api/core
+
+auth:
+  access-token:
+    expires-in: 3600
+    secret: abcd
+
+kafka:
+  start-campaign:
+    topic: start-campaign
+  stop-campaign:
+    topic: stop-campaign
+  start-seo-campaign:
+    topic: start-seo-campaign
+  stop-seo-campaign:
+    topic: stop-seo-campaign
+  resume-task:
+    topic: resume-task
+    group: resume-task-group
+  callback-task:
+    topic: callback-task
+    group: callback-task-group
+
+internal:
+  count-view-uri: http://localhost:8081/api/logging/campaign/count-view
+  login-uri: http://localhost:8001/api/auth/login
+  username: 111106877919172740277
+  password: datnv
+
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVER}
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  liquibase:
+    change-log: classpath:changelog/master.xml
+    url: ${DB_URL}
+    user: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
